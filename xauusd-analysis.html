@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XAU/USD — Market Analysis · May 11, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-dim: #8C7035;
+    --gold-bright: #F0CC6E;
+    --bull: #3FB68C;
+    --bear: #E05340;
+    --neut: #8A8A7A;
+    --bg: #0A0A08;
+    --bg2: #111110;
+    --bg3: #1A1A17;
+    --bg4: #222220;
+    --border: rgba(201,168,76,0.15);
+    --border2: rgba(201,168,76,0.08);
+    --text: #E8E4D8;
+    --text2: #9A9688;
+    --text3: #5A5A50;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* Noise grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 180px;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 998;
+    animation: grain 8s steps(10) infinite;
+  }
+
+  @keyframes grain {
+    0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-3%)} 20%{transform:translate(3%,2%)}
+    30%{transform:translate(-1%,4%)} 40%{transform:translate(2%,-2%)} 50%{transform:translate(-4%,1%)}
+    60%{transform:translate(3%,-1%)} 70%{transform:translate(-2%,3%)} 80%{transform:translate(4%,-3%)} 90%{transform:translate(-3%,2%)}
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .ticker-inner {
+    display: flex;
+    gap: 48px;
+    animation: tickerScroll 30s linear infinite;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    padding: 0 24px;
+  }
+  .ticker-item { display: flex; gap: 8px; align-items: center; }
+  .ticker-item .sym { color: var(--gold); font-weight: 500; }
+  .ticker-item .up { color: var(--bull); }
+  .ticker-item .dn { color: var(--bear); }
+  @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── HEADER ── */
+  header {
+    padding: 60px 48px 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: 'GOLD';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    font-family: var(--font-display);
+    font-size: 240px;
+    color: rgba(201,168,76,0.04);
+    letter-spacing: -8px;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .header-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-label::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .header-title {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 8vw, 100px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+  .header-title span { color: var(--gold); }
+
+  .header-price-block {
+    text-align: right;
+  }
+  .price-big {
+    font-family: var(--font-display);
+    font-size: 64px;
+    line-height: 1;
+    color: var(--gold-bright);
+    letter-spacing: 1px;
+  }
+  .price-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .price-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gold-dim);
+    margin-top: 6px;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item { }
+  .meta-item .mi-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 3px;
+  }
+  .meta-item .mi-value {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .mi-value.bull { color: var(--bull); }
+  .mi-value.bear { color: var(--bear); }
+  .mi-value.gold { color: var(--gold); }
+
+  /* ── LAYOUT ── */
+  .content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; }
+
+  /* ── SECTION ── */
+  .section {
+    border: 1px solid var(--border);
+    border-radius: 0;
+    background: var(--bg2);
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    opacity: 0.6;
+  }
+
+  .section-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--text3);
+  }
+  .section-body { padding: 24px; }
+
+  /* ── STAT TILES ── */
+  .stat-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border2);
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+  .stat-tile {
+    background: var(--bg2);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-tile::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 24px;
+    right: 24px;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    opacity: 0.3;
+  }
+  .st-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+  .st-value {
+    font-family: var(--font-display);
+    font-size: 36px;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+  .st-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 6px;
+  }
+
+  /* ── CHART ── */
+  .chart-wrap { position: relative; height: 320px; }
+  .chart-tabs { display: flex; gap: 0; margin-bottom: 16px; }
+  .chart-tab {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: -1px;
+  }
+  .chart-tab.active, .chart-tab:hover { background: var(--bg3); color: var(--gold); border-color: var(--gold-dim); }
+
+  /* ── LEVELS ── */
+  .levels-container { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .level-group-title {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .level-group-title.bull { color: var(--bull); }
+  .level-group-title.bull::before { content: '▲'; font-size: 8px; }
+  .level-group-title.bear { color: var(--bear); }
+  .level-group-title.bear::before { content: '▼'; font-size: 8px; }
+
+  .level-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border2);
+    position: relative;
+    cursor: default;
+  }
+  .level-row:hover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(201,168,76,0.03);
+  }
+  .level-row:last-child { border-bottom: none; }
+  .lr-name { font-family: var(--font-mono); font-size: 11px; color: var(--text3); }
+  .lr-price {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .lr-price.bull { color: var(--bull); }
+  .lr-price.bear { color: var(--bear); }
+  .lr-price.gold { color: var(--gold); }
+  .lr-bar {
+    height: 2px;
+    border-radius: 1px;
+    margin-top: 4px;
+    opacity: 0.4;
+  }
+
+  /* ── SIGNALS TABLE ── */
+  .signal-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border2);
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .signal-row:last-child { border-bottom: none; }
+  .sig-badge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border: 1px solid;
+    min-width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .sig-badge.bull { border-color: var(--bull); color: var(--bull); }
+  .sig-badge.bear { border-color: var(--bear); color: var(--bear); }
+  .sig-badge.neut { border-color: var(--neut); color: var(--neut); }
+
+  /* ── TF TABLE ── */
+  .tf-table { width: 100%; border-collapse: collapse; }
+  .tf-table th {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 8px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .tf-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border2);
+    font-size: 12px;
+    vertical-align: middle;
+  }
+  .tf-table tr:last-child td { border-bottom: none; }
+  .tf-table tr:hover td { background: rgba(201,168,76,0.02); }
+  .tf-label {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+  .tf-bias-pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid;
+  }
+  .tf-bias-pill.bull { border-color: var(--bull); color: var(--bull); }
+  .tf-bias-pill.neut { border-color: var(--neut); color: var(--neut); }
+  .tf-range { font-family: var(--font-mono); font-size: 11px; color: var(--text2); }
+  .tf-driver { font-size: 12px; color: var(--text3); max-width: 220px; }
+  .tf-watch { font-family: var(--font-mono); font-size: 11px; color: var(--gold-dim); }
+
+  /* ── CATALYSTS ── */
+  .catalyst-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border2);
+    align-items: flex-start;
+  }
+  .catalyst-item:last-child { border-bottom: none; }
+  .cat-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+  .cat-date {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .cat-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .cat-body { font-size: 12px; color: var(--text3); line-height: 1.55; }
+
+  /* ── SCENARIOS ── */
+  .scenarios { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border2); margin-top: 32px; }
+  .scenario {
+    background: var(--bg2);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .scenario.bull::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--bull);
+    opacity: 0.7;
+  }
+  .scenario.bear::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--bear);
+    opacity: 0.7;
+  }
+  .sc-type {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .scenario.bull .sc-type { color: var(--bull); }
+  .scenario.bear .sc-type { color: var(--bear); }
+  .sc-name {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+  .scenario.bull .sc-name { color: var(--bull); }
+  .scenario.bear .sc-name { color: var(--bear); }
+  .sc-desc { font-size: 12px; color: var(--text3); line-height: 1.6; margin-bottom: 16px; }
+  .sc-target {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+  .scenario.bull .sc-target { color: var(--gold-bright); }
+  .scenario.bear .sc-target { color: var(--bear); }
+  .sc-prob {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+
+  /* ── BASE CASE ── */
+  .base-case {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-top: 1px;
+    position: relative;
+  }
+  .base-case::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+  .bc-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .bc-text { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+  /* ── BIAS METER ── */
+  .bias-meter {
+    position: relative;
+    height: 4px;
+    background: linear-gradient(to right, var(--bear), var(--bg4), var(--bull));
+    border-radius: 2px;
+    margin: 16px 0 8px;
+  }
+  .bias-needle {
+    position: absolute;
+    top: -6px;
+    width: 16px;
+    height: 16px;
+    background: var(--gold-bright);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 8px rgba(240,204,110,0.5);
+    transition: left 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .bias-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    line-height: 1.6;
+    max-width: 640px;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--gold-dim);
+  }
+
+  /* ── ANIMATED ENTRY ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .fade-up:nth-child(1) { animation-delay: 0.1s; }
+  .fade-up:nth-child(2) { animation-delay: 0.2s; }
+  .fade-up:nth-child(3) { animation-delay: 0.3s; }
+  .fade-up:nth-child(4) { animation-delay: 0.4s; }
+
+  /* ── BLINKING DOT ── */
+  .live-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--bull);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    header { padding: 40px 24px 32px; }
+    header::before { font-size: 120px; }
+    .header-top { flex-direction: column; gap: 24px; }
+    .header-price-block { text-align: left; }
+    .price-big { font-size: 48px; }
+    .stat-tiles { grid-template-columns: 1fr 1fr; }
+    .levels-container { grid-template-columns: 1fr; }
+    .scenarios { grid-template-columns: 1fr; }
+    .content { padding: 0 24px 60px; }
+    footer { padding: 20px 24px; }
+  }
+  @media (max-width: 600px) {
+    .stat-tiles { grid-template-columns: 1fr; }
+    .header-title { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ticker -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item"><span class="sym">XAU/USD</span> <span class="up">4,715.69</span> <span class="up">+0.52%</span></span>
+    <span class="ticker-item"><span class="sym">DXY</span> <span class="dn">98.12</span> <span class="dn">–0.18%</span></span>
+    <span class="ticker-item"><span class="sym">XAG/USD</span> <span class="up">31.84</span> <span class="up">+0.31%</span></span>
+    <span class="ticker-item"><span class="sym">US10Y</span> <span class="dn">4.38%</span> <span class="dn">–0.03</span></span>
+    <span class="ticker-item"><span class="sym">WTI</span> <span class="up">74.20</span> <span class="up">+1.12%</span></span>
+    <span class="ticker-item"><span class="sym">FED RATE</span> <span class="neut" style="color:var(--neut)">3.50–3.75%</span> UNCHANGED</span>
+    <span class="ticker-item"><span class="sym">CPI RELEASE</span> MAY 12 · HIGH IMPACT</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="ticker-item"><span class="sym">XAU/USD</span> <span class="up">4,715.69</span> <span class="up">+0.52%</span></span>
+    <span class="ticker-item"><span class="sym">DXY</span> <span class="dn">98.12</span> <span class="dn">–0.18%</span></span>
+    <span class="ticker-item"><span class="sym">XAG/USD</span> <span class="up">31.84</span> <span class="up">+0.31%</span></span>
+    <span class="ticker-item"><span class="sym">US10Y</span> <span class="dn">4.38%</span> <span class="dn">–0.03</span></span>
+    <span class="ticker-item"><span class="sym">WTI</span> <span class="up">74.20</span> <span class="up">+1.12%</span></span>
+    <span class="ticker-item"><span class="sym">FED RATE</span> <span class="neut" style="color:var(--neut)">3.50–3.75%</span> UNCHANGED</span>
+    <span class="ticker-item"><span class="sym">CPI RELEASE</span> MAY 12 · HIGH IMPACT</span>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-top fade-up">
+    <div>
+      <div class="header-label">
+        <span class="live-dot"></span> Market analysis · Sunday May 10, 2026
+      </div>
+      <h1 class="header-title">XAU/<span>USD</span></h1>
+      <p style="font-family:var(--font-mono);font-size:12px;color:var(--text3);margin-top:12px;max-width:420px;line-height:1.7;">
+        Pre-market intelligence for Monday, May 11, 2026 open. 
+        Analysis covers 1-minute through 4-hour timeframes 
+        across technical, fundamental, and geopolitical dimensions.
+      </p>
+    </div>
+    <div class="header-price-block">
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">Friday close</div>
+      <div class="price-big">$4,715</div>
+      <div class="price-label">Spot gold · USD per troy oz</div>
+      <div class="price-date">Non-trading: Sat May 9 – Sun May 10</div>
+    </div>
+  </div>
+  <div class="header-meta fade-up" style="animation-delay:0.2s">
+    <div class="meta-item">
+      <div class="mi-label">Weekly range</div>
+      <div class="mi-value">$4,500 – $4,750</div>
+    </div>
+    <div class="meta-item">
+      <div class="mi-label">H1 pivot SMA</div>
+      <div class="mi-value gold">$4,706.42</div>
+    </div>
+    <div class="meta-item">
+      <div class="mi-label">200-period SMA</div>
+      <div class="mi-value">$4,665.16</div>
+    </div>
+    <div class="meta-item">
+      <div class="mi-label">RSI (14)</div>
+      <div class="mi-value bull">~55 · Neutral-bull</div>
+    </div>
+    <div class="meta-item">
+      <div class="mi-label">Overall bias</div>
+      <div class="mi-value bull">Cautious Bullish</div>
+    </div>
+    <div class="meta-item">
+      <div class="mi-label">CPI impact</div>
+      <div class="mi-value bear">Tue May 12 · HIGH</div>
+    </div>
+  </div>
+</header>
+
+<!-- Stat tiles -->
+<div class="stat-tiles fade-up" style="animation-delay:0.3s">
+  <div class="stat-tile">
+    <div class="st-label">1-minute range</div>
+    <div class="st-value" style="font-size:28px;color:var(--text2);">$4,700–$4,730</div>
+    <div class="st-sub">Asia open chop · thin liquidity</div>
+  </div>
+  <div class="stat-tile">
+    <div class="st-label">4-hour target</div>
+    <div class="st-value">$4,828</div>
+    <div class="st-sub">Swing high resistance</div>
+  </div>
+  <div class="stat-tile">
+    <div class="st-label">Key support</div>
+    <div class="st-value" style="color:var(--bull);">$4,700</div>
+    <div class="st-sub">Must hold for bull case</div>
+  </div>
+  <div class="stat-tile">
+    <div class="st-label">June cut probability</div>
+    <div class="st-value" style="color:var(--bear);font-size:28px;">5.1%</div>
+    <div class="st-sub">CME · rates unchanged 94.9%</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Chart section -->
+  <div class="section fade-up" style="animation-delay:0.15s">
+    <div class="section-header">
+      <div class="section-title">Price projection · May 11–12, 2026</div>
+      <div style="display:flex;gap:0;">
+        <button class="chart-tab active" onclick="switchChart('projection',this)">Projection</button>
+        <button class="chart-tab" onclick="switchChart('session',this)">Session ranges</button>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="chart-wrap">
+        <canvas id="mainChart" role="img" aria-label="XAUUSD price projection chart showing base, bull and bear scenarios from Monday open through Tuesday CPI">
+          XAUUSD base case $4700–$4750 Monday, bull target $4828, bear risk $4587.
+        </canvas>
+      </div>
+      <div style="display:flex;gap:24px;margin-top:12px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--text3);">
+          <span style="width:18px;height:2px;background:#C9A84C;display:inline-block;"></span>Base case
+        </span>
+        <span style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--text3);">
+          <span style="width:18px;height:2px;background:#3FB68C;display:inline-block;border-top:2px dashed #3FB68C;"></span>Bull scenario
+        </span>
+        <span style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--text3);">
+          <span style="width:18px;height:2px;background:#E05340;display:inline-block;border-top:2px dashed #E05340;"></span>Bear scenario
+        </span>
+        <span style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--text3);">
+          <span style="width:18px;height:2px;background:#5A5A50;display:inline-block;border-top:1px dashed #5A5A50;"></span>Key levels
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Levels + Signals row -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);margin-top:32px;">
+    <div class="section" style="margin:0;">
+      <div class="section-header">
+        <div class="section-title">Key price levels</div>
+        <div class="section-badge">Fib + SMA</div>
+      </div>
+      <div class="section-body">
+        <div class="levels-container">
+          <div>
+            <div class="level-group-title bear">Resistance</div>
+            <div class="level-row">
+              <span class="lr-name">R3 — major swing</span>
+              <span class="lr-price bear">$4,891</span>
+            </div>
+            <div class="level-row">
+              <span class="lr-name">R2 — swing anchor</span>
+              <span class="lr-price bear">$4,828</span>
+            </div>
+            <div class="level-row">
+              <span class="lr-name">R1 — weekly high</span>
+              <span class="lr-price bear">$4,760</span>
+            </div>
+            <div class="level-row">
+              <span class="lr-name">Intraday cap</span>
+              <span class="lr-price" style="color:#C08050;">$4,750</span>
+            </div>
+          </div>
+          <div>
+            <div class="level-group-title bull">Support</div>
+            <div class="level-row">
+              <span class="lr-name">S1 — SMA pivot</span>
+              <span class="lr-price gold">$4,706</span>
+            </div>
+            <div class="level-row">
+              <span class="lr-name">S2 — 200-SMA</span>
+              <span class="lr-price bull">$4,665</span>
+            </div>
+            <div class="level-row">
+              <span class="lr-name">S3 — Fib 38.2%</span>
+              <span class="lr-price bull">$4,587</span>
+            </div>
+            <div class="level-row">
+              <span class="lr-name">S4 — Fib 50.0%</span>
+              <span class="lr-price bull">$4,493</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Sentiment bias meter</div>
+          <div class="bias-meter"><div class="bias-needle" id="biasNeedle" style="left:62%;"></div></div>
+          <div class="bias-labels"><span>Max bear</span><span>Neutral</span><span>Max bull</span></div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--gold);text-align:center;margin-top:8px;">Cautious Bullish — 62/100</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin:0;">
+      <div class="section-header">
+        <div class="section-title">Technical signals</div>
+        <div class="section-badge">Multi-indicator</div>
+      </div>
+      <div class="section-body">
+        <div class="signal-row"><span class="sig-badge bull">BULL</span>RSI ~55 — neutral-positive, not overextended, room to run higher</div>
+        <div class="signal-row"><span class="sig-badge bull">BULL</span>Price above 200-SMA ($4,665) — medium-term uptrend structurally intact</div>
+        <div class="signal-row"><span class="sig-badge bull">BULL</span>Weekly candle: long lower shadow — buyers defended the $4,500 zone hard</div>
+        <div class="signal-row"><span class="sig-badge bull">BULL</span>V-shaped reversal this week — $4,499 low to $4,715 close, +4.8%</div>
+        <div class="signal-row"><span class="sig-badge neut">NEUT</span>MACD declining in positive territory — momentum weakening, expect consolidation</div>
+        <div class="signal-row"><span class="sig-badge neut">NEUT</span>H1 orbiting $4,706 pivot SMA — price compression, indecision before CPI</div>
+        <div class="signal-row"><span class="sig-badge bear">WARN</span>$4,750 resistance tested 3× — each rejection adds selling pressure</div>
+        <div class="signal-row"><span class="sig-badge bear">WARN</span>Pre-CPI positioning risk — smart money may reduce longs before Tuesday</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeframe table -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Timeframe breakdown — directional forecast</div>
+      <div class="section-badge">1M · 5M · 15M · 1H · 4H</div>
+    </div>
+    <div class="section-body" style="padding:0;">
+      <table class="tf-table">
+        <thead>
+          <tr>
+            <th>Timeframe</th>
+            <th>Bias</th>
+            <th>Expected range</th>
+            <th>Key driver</th>
+            <th>Watch level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="tf-label">1 Min</div></td>
+            <td><span class="tf-bias-pill neut">Choppy</span></td>
+            <td><div class="tf-range">$4,700 – $4,730</div></td>
+            <td><div class="tf-driver">Open gap fill, thin Asia liquidity, noise dominant</div></td>
+            <td><div class="tf-watch">$4,706</div></td>
+          </tr>
+          <tr>
+            <td><div class="tf-label">5 Min</div></td>
+            <td><span class="tf-bias-pill bull">Mild Bull</span></td>
+            <td><div class="tf-range">$4,698 – $4,745</div></td>
+            <td><div class="tf-driver">Geopolitical tone at open; Iran/US weekend headlines</div></td>
+            <td><div class="tf-watch">$4,706 / $4,720</div></td>
+          </tr>
+          <tr>
+            <td><div class="tf-label">15 Min</div></td>
+            <td><span class="tf-bias-pill bull">Bullish</span></td>
+            <td><div class="tf-range">$4,695 – $4,755</div></td>
+            <td><div class="tf-driver">London session opens; DXY reaction sets direction</div></td>
+            <td><div class="tf-watch">$4,750 cap</div></td>
+          </tr>
+          <tr>
+            <td><div class="tf-label">1 Hour</div></td>
+            <td><span class="tf-bias-pill bull">Bullish</span></td>
+            <td><div class="tf-range">$4,690 – $4,760</div></td>
+            <td><div class="tf-driver">Hold above $4,706 pivot SMA as critical structural floor</div></td>
+            <td><div class="tf-watch">$4,700 must hold</div></td>
+          </tr>
+          <tr>
+            <td><div class="tf-label">4 Hour</div></td>
+            <td><span class="tf-bias-pill bull">Bull structure</span></td>
+            <td><div class="tf-range">$4,665 – $4,828</div></td>
+            <td><div class="tf-driver">Weekly higher-low defended; CPI looms Tue — binary risk</div></td>
+            <td><div class="tf-watch">$4,828 target</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Catalysts -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Fundamental catalysts — week of May 11</div>
+      <div class="section-badge">Economic calendar</div>
+    </div>
+    <div class="section-body">
+      <div class="catalyst-item">
+        <div class="cat-icon">MON</div>
+        <div>
+          <div class="cat-date">MAY 11 · MARKET OPEN</div>
+          <div class="cat-title">Weekend gap risk — geopolitical tone</div>
+          <div class="cat-body">Market reopens after two non-trading days. US-Iran tensions and Trump's naval blockade comments are live risks. A geopolitical escalation over the weekend could spark a $15–30 spike at open before finding equilibrium. Watch the first 15-minute candle for directional intent.</div>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="cat-icon" style="border-color:var(--bear);color:var(--bear);">TUE</div>
+        <div>
+          <div class="cat-date" style="color:var(--bear);">MAY 12 · US APRIL CPI — ⚡ HIGH IMPACT</div>
+          <div class="cat-title">The week's binary event — CPI data release</div>
+          <div class="cat-body">The single most important data point of the week. A hot CPI print above consensus strengthens the dollar and sends gold toward $4,665–$4,587. A cool or in-line print is the green light for bulls to challenge $4,828. Do not size up positions on Monday — this event makes direction unclear until it prints.</div>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="cat-icon">WED</div>
+        <div>
+          <div class="cat-date">MAY 13 · PPI DATA</div>
+          <div class="cat-title">Producer price index — secondary inflation gauge</div>
+          <div class="cat-body">Secondary inflation read. If CPI has already been absorbed Monday–Tuesday, PPI impact will be muted unless it sharply diverges. Still watch for producer-level price pressure filtering into gold sentiment. Treasury auction results this week may also add pricing noise.</div>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="cat-icon">THU</div>
+        <div>
+          <div class="cat-date">MAY 14 · JOBLESS CLAIMS</div>
+          <div class="cat-title">Initial claims — labor market read</div>
+          <div class="cat-body">A miss on claims (i.e., higher unemployment) could revive Fed rate cut expectations and provide a short-term bid for gold. Not expected to be a major mover unless the print deviates by 30K+ from consensus. The Fed confirmed rates unchanged at 3.50–3.75% with only 5.1% probability of a June cut.</div>
+        </div>
+      </div>
+      <div class="catalyst-item">
+        <div class="cat-icon" style="border-color:var(--gold-dim);color:var(--gold-dim);">GEO</div>
+        <div>
+          <div class="cat-date" style="color:var(--gold);">ONGOING · GEOPOLITICAL WILDCARD</div>
+          <div class="cat-title">US–Iran tensions + Trump commentary</div>
+          <div class="cat-body">US military officials are briefing President Trump on potential Iran operations. Trump stated the US will continue its naval blockade until a nuclear agreement is reached. Any Strait of Hormuz escalation = immediate safe-haven gold spike. De-escalation = profit-taking pressure. Trump social media posts are a constant intraday wildcard — keep alerts on.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenarios -->
+  <div style="margin-top:32px;">
+    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Monday open scenarios</div>
+  </div>
+  <div class="scenarios">
+    <div class="scenario bull">
+      <div class="sc-type">▲ Bullish scenario · 25% probability</div>
+      <div class="sc-name">Gap Up +<br>Iran Escalation</div>
+      <div class="sc-desc">Price opens above $4,715, holds $4,706 on any dip, and breaks $4,750 resistance on geopolitical risk-on demand. London session continuation possible. Dollar remains weak. A 4H close above $4,750 confirms continuation.</div>
+      <div class="sc-target">Target: $4,760 → $4,828</div>
+      <div class="sc-prob">Stop: close below $4,665</div>
+    </div>
+    <div class="scenario bear">
+      <div class="sc-type">▼ Bearish scenario · 15% probability</div>
+      <div class="sc-name">Pre-CPI<br>Risk-Off Flush</div>
+      <div class="sc-desc">Smart money reduces gold exposure before Tuesday's CPI. Price breaks below $4,706, triggers sell stops through $4,665 (200-SMA), and accelerates toward $4,587 (38.2% fib). Dollar strengthening accelerates the move.</div>
+      <div class="sc-target">Risk: $4,665 → $4,587</div>
+      <div class="sc-prob">Recovery signal: reclaim $4,706</div>
+    </div>
+  </div>
+  <div class="base-case">
+    <div class="bc-label">◈ Base case · 60% probability</div>
+    <div class="bc-text">
+      Price consolidates between <strong style="color:var(--gold);">$4,700–$4,750</strong> on Monday with low conviction ahead of Tuesday's CPI. 
+      Thin Asian session dominates the first 4–6 hours with choppy 1M–15M price action. London and NY sessions add slight directional bias. 
+      The real trade setup emerges <em>after</em> CPI prints on Tuesday morning. 
+      A clean hourly close above <strong style="color:var(--gold);">$4,750</strong> on any session is the signal for a 4H bullish continuation targeting $4,828. 
+      Risk management is paramount — keep position sizes small Monday, do not FOMO into the open.
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div style="margin-top:40px;padding:20px;border:1px solid var(--border2);background:var(--bg2);">
+    <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;">Risk disclosure</div>
+    <p style="font-family:var(--font-mono);font-size:10px;color:var(--text3);line-height:1.7;">
+      This analysis is for informational and educational purposes only. It does not constitute financial advice, investment recommendations, or a solicitation to trade. 
+      Sources: Dukascopy Bank SA, FXStreet, LiteFinance, MarketPulse (OANDA), TradingView community analysis — as of May 10, 2026. 
+      Gold trading involves substantial risk of loss. Past price behavior does not guarantee future outcomes. 
+      Always use appropriate risk management including stop-loss orders.
+    </p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-text">
+    Analysis generated for Monday, May 11, 2026 market open · XAUUSD spot gold ·
+    Key catalyst: US April CPI — Tuesday May 12 · Maintain risk discipline ahead of binary event
+  </div>
+  <div class="footer-logo">XAU/USD</div>
+</footer>
+
+<script>
+// ── CHART ──
+const isDark = true;
+const gridCol = 'rgba(201,168,76,0.07)';
+const tickCol = '#5A5A50';
+
+let activeChart = null;
+
+function buildProjectionChart() {
+  return {
+    type: 'line',
+    data: {
+      labels: ['Mon Asia\nopen', 'Mon London\nopen', 'Mon NY\nopen', 'Mon NY\nclose', 'Tue pre-\nCPI', 'Tue CPI\nprint'],
+      datasets: [
+        {
+          label: 'Base case',
+          data: [4715, 4718, 4725, 4722, 4720, 4732],
+          borderColor: '#C9A84C',
+          borderWidth: 2,
+          pointBackgroundColor: '#C9A84C',
+          pointRadius: 4,
+          tension: 0.4,
+          fill: false,
+        },
+        {
+          label: 'Bull scenario',
+          data: [4718, 4732, 4752, 4755, 4762, 4828],
+          borderColor: '#3FB68C',
+          borderWidth: 1.5,
+          borderDash: [6, 4],
+          pointRadius: 3,
+          pointBackgroundColor: '#3FB68C',
+          tension: 0.4,
+          fill: false,
+        },
+        {
+          label: 'Bear scenario',
+          data: [4710, 4700, 4685, 4670, 4650, 4587],
+          borderColor: '#E05340',
+          borderWidth: 1.5,
+          borderDash: [6, 4],
+          pointRadius: 3,
+          pointBackgroundColor: '#E05340',
+          tension: 0.4,
+          fill: false,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1A17',
+          borderColor: '#C9A84C',
+          borderWidth: 0.5,
+          titleColor: '#C9A84C',
+          bodyColor: '#9A9688',
+          titleFont: { family: 'DM Mono', size: 10 },
+          bodyFont: { family: 'DM Mono', size: 11 },
+          callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString() }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: tickCol, font: { family: 'DM Mono', size: 10 }, autoSkip: false },
+          grid: { color: gridCol },
+          border: { color: 'rgba(201,168,76,0.15)' }
+        },
+        y: {
+          min: 4550,
+          max: 4870,
+          ticks: { color: tickCol, font: { family: 'DM Mono', size: 10 }, callback: v => '$' + v.toLocaleString() },
+          grid: { color: gridCol },
+          border: { color: 'rgba(201,168,76,0.15)' }
+        }
+      },
+      animation: {
+        onComplete: function() { drawLevelLines(this); }
+      }
+    }
+  };
+}
+
+function buildSessionChart() {
+  return {
+    type: 'bar',
+    data: {
+      labels: ['Asia open', 'Asia mid', 'London open', 'London mid', 'NY open', 'NY mid', 'NY close'],
+      datasets: [{
+        label: 'Session range (H–L)',
+        data: [
+          {x: 'Asia open',    y: [4700, 4725]},
+          {x: 'Asia mid',     y: [4698, 4728]},
+          {x: 'London open',  y: [4695, 4748]},
+          {x: 'London mid',   y: [4700, 4752]},
+          {x: 'NY open',      y: [4703, 4755]},
+          {x: 'NY mid',       y: [4706, 4750]},
+          {x: 'NY close',     y: [4706, 4744]},
+        ],
+        backgroundColor: 'rgba(201,168,76,0.15)',
+        borderColor: '#C9A84C',
+        borderWidth: 1.5,
+        borderSkipped: false,
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1A1A17',
+          borderColor: '#C9A84C',
+          borderWidth: 0.5,
+          titleColor: '#C9A84C',
+          bodyColor: '#9A9688',
+          titleFont: { family: 'DM Mono', size: 10 },
+          bodyFont: { family: 'DM Mono', size: 11 },
+          callbacks: {
+            label: ctx => {
+              const v = ctx.raw.y;
+              return `Low: $${v[0].toLocaleString()}  High: $${v[1].toLocaleString()}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: tickCol, font: { family: 'DM Mono', size: 10 } },
+          grid: { color: gridCol },
+          border: { color: 'rgba(201,168,76,0.15)' }
+        },
+        y: {
+          min: 4660,
+          max: 4790,
+          ticks: { color: tickCol, font: { family: 'DM Mono', size: 10 }, callback: v => '$' + v.toLocaleString() },
+          grid: { color: gridCol },
+          border: { color: 'rgba(201,168,76,0.15)' }
+        }
+      }
+    }
+  };
+}
+
+function drawLevelLines(chartInstance) {
+  const chart = chartInstance;
+  const ctx = chart.ctx;
+  const yScale = chart.scales.y;
+  const xScale = chart.scales.x;
+
+  const levels = [
+    { y: 4828, color: '#8A3020', label: '$4,828 R2' },
+    { y: 4750, color: '#9A6030', label: '$4,750 cap' },
+    { y: 4706, color: '#8C7035', label: '$4,706 pivot' },
+    { y: 4665, color: '#2A7A5A', label: '$4,665 S2' },
+    { y: 4587, color: '#2A7A5A', label: '$4,587 S3' },
+  ];
+
+  levels.forEach(lv => {
+    const yPx = yScale.getPixelForValue(lv.y);
+    if (yPx < yScale.top || yPx > yScale.bottom) return;
+    ctx.save();
+    ctx.strokeStyle = lv.color;
+    ctx.lineWidth = 0.8;
+    ctx.setLineDash([3, 5]);
+    ctx.globalAlpha = 0.7;
+    ctx.beginPath();
+    ctx.moveTo(xScale.left, yPx);
+    ctx.lineTo(xScale.right - 70, yPx);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = lv.color;
+    ctx.font = '9px "DM Mono", monospace';
+    ctx.fillText(lv.label, xScale.right - 65, yPx - 3);
+    ctx.restore();
+  });
+}
+
+function switchChart(type, btn) {
+  document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  if (activeChart) { activeChart.destroy(); activeChart = null; }
+  const canvas = document.getElementById('mainChart');
+  const cfg = type === 'projection' ? buildProjectionChart() : buildSessionChart();
+  activeChart = new Chart(canvas, cfg);
+}
+
+// Init chart
+activeChart = new Chart(document.getElementById('mainChart'), buildProjectionChart());
+
+// Animate bias needle on load
+setTimeout(() => {
+  document.getElementById('biasNeedle').style.left = '62%';
+}, 500);
+</script>
+</body>
+</html>
